@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row" style="margin-bottom:20px;">
+	<div class="col-md-12 text-center">
+		<p><strong>A simple django application demonstrating CRUD</strong></p>
+		<p>By: Roselle M. Ebarle</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		<h1>Class List</h1>
+
+		{% if total_students > 0 %}
+		<table class="table table-striped table-bordered table-hover ">
+			<caption>Showing {{ total_students }} student(s)...</caption>
+			<thead>
+				<tr>
+					<th>ID Number</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for student in students %}
+				{% if student.is_active %}
+				<tr>
+					<td>{{ student.id_number }}</td>
+					<td>{{ student.first_name }}</td>
+					<td>{{ student.last_name }}</td>
+					<td><a href="/update/{{ student.id }}" class="btn btn-sm btn-primary" style="width:100%">Update</a></td>
+					<td><a href="/drop/{{ student.id }}" class="btn btn-sm btn-danger" style="width:100%">Drop</a></td>
+				</tr>
+				{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+		<p> Sorry, you need to add students to your list first! Please use the form on the right side of the page.</p>
+		{% endif %}
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form class="form" action="/add/" method="POST">
+				{% csrf_token %}
+				<legend><strong>Add Students</strong></legend>
+				<div class="form-group">
+					<label for="id_number">ID Number</label>
+					<input class="form-control" type="text" name="id_number">
+				</div>
+				<div class="form-group">
+					<label for="first_name">First Name</label>
+					<input class="form-control" type="text" name="first_name">
+				</div>
+				<div class="form-group">
+					<label for="last_Name">Last Name</label>
+					<input class="form-control" type="text" name="last_name">
+				</div>
+				<div>
+					<input class="form-control btn-info" type="submit" value="Submit">
+				</div>
+			</form>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<p><strong>What can you do?</strong></p>
+				<p>
+					1. Add your students <br>
+					2. Update your student's details <br>
+					3. Drop a student <br>
+				</p> 
+				<p><i>No form validation implemented, yet.</i></p>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+{% endblock %}
